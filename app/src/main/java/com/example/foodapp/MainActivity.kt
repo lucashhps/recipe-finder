@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,6 +40,10 @@ class MainActivity : ComponentActivity() {
 // Classes
 
 class PageIndex(var index : Int){
+    fun changeIndex(newIndex : Int){
+        index = newIndex
+    }
+
     fun voltar(){
         index -= 1
     }
@@ -64,55 +69,65 @@ class Receita(var name : String, var descricao : String, var ingredientes : Arra
 
 @Composable
 fun FoodApp(){
-    var pageIndex by remember { mutableStateOf(PageIndex(0)) }
-    when(pageIndex.index) {
-        0 -> MainMenu(pageIndex)
-        1 -> BuscarReceita(pageIndex)
-        else -> MainMenu(pageIndex)
+    var pageIndex by remember { mutableStateOf(0) }
+    when(pageIndex) {
+        0 -> MainMenu()
+        1 -> BuscarReceitaPage()
+        else -> MainMenu()
     }
+    Text(text = pageIndex.toString())
 }
 
 // App pages
 
 @Composable
-fun MainMenu( pageIndex : PageIndex ) {
+fun MainMenu() {
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
     ) {
-        MenuButton("Buscar Receita", pageIndex)
-        MenuButton("Receita", pageIndex)
-        MenuButton("Ingrediente", pageIndex)
-        MenuButton("Configurações", pageIndex)
+        MenuButton("Buscar Receita")
+        MenuButton("Receita")
+        MenuButton("Ingrediente")
+        MenuButton("Configurações")
     }
 
 }
 
 @Composable
-fun MenuButton(text : String, pageIndex: PageIndex){
+fun BuscarReceitaPage() { // WIP
+    Button( onClick = {  } ){
+        Text(text = "voltar")
+    }
+    Text(text = "buscar receitas page")
+}
+
+@Composable
+fun ReceitaPage() {
+
+}
+
+@Composable
+fun IngredientePage() {
+
+}
+
+@Composable
+fun ConfigPage() {
+
+}
+
+// Custom Components
+
+@Composable
+fun MenuButton(text : String){
     Button(
-        onClick = {
-            when(text){
-                "Buscar Receita" -> pageIndex.index = 1
-                "Receita" -> pageIndex.index = 2
-                "Ingrediente" -> pageIndex.index = 3
-                "Configurações" -> pageIndex.index = 4
-                else -> pageIndex.resetar()
-            }
-        }
+        onClick = {  }
     ) {
         Text(
             text = text
         )
     }
-}
-
-@Composable
-fun BuscarReceita(pageIndex : PageIndex) {
-    Button( onClick = { pageIndex.voltar() } ){
-        Text(text = "voltar")
-    }
-    Text(text = "buscar receitas page")
 }
 
 // App Preview
