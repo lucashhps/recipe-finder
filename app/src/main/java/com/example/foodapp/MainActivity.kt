@@ -82,29 +82,32 @@ class ReceitaBusca(name : String, descricao : String, ingredientes : ArrayList<I
     fun nameMatch(matchName : String) : Boolean  {
         return Regex(name.lowercase()).containsMatchIn(matchName.lowercase())
     }
-    fun searchRecipe(receitas : ArrayList<Receita>) : ArrayList<Receita> {
+    fun searchRecipe(receitas : ArrayList<Receita>, tempoOn : Boolean = false, ingredienteOn : Boolean = false) : ArrayList<Receita> { // falta adicionar função de tempo/ingredientes on/off
         var busca : ArrayList<Receita> = ArrayList<Receita>()
         for(receita in receitas){
             var temIngredientes : Boolean = true
             // Filtrar por nome
             if(nameMatch(receita.name)) {
                 // Filtrar por tempo
-                if(tempo <= receita.tempo){
+                if((receita.tempo <= tempo) || !tempoOn){
                     // Filtrar por ingredientes
-                    for(ingredienteNecessario in receita.ingredientes){
-                        if(!temIngredientes){
-                            break
-                        }
-                        for(ingrediente in ingredientes){
-                            if(ingrediente.name.equals(ingredienteNecessario.name)){
-                                break
-                            } else if(ingredientes.indexOf(ingrediente) == (ingredientes.size - 1)){
-                                temIngredientes = false
+                    if(ingredienteOn){
+                        for(ingredienteNecessario in receita.ingredientes){
+                            if(!temIngredientes){
                                 break
                             }
-                        }
+                            for(ingrediente in ingredientes){
+                                if(ingrediente.name.equals(ingredienteNecessario.name)){
+                                    break
+                                } else if(ingredientes.indexOf(ingrediente) == (ingredientes.size - 1)){
+                                    temIngredientes = false
+                                    break
+                                }
+                            }
 
+                        }
                     }
+
 
                     if(temIngredientes){
                         busca.add(receita)
