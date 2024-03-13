@@ -82,34 +82,34 @@ class ReceitaBusca(name : String, descricao : String, ingredientes : ArrayList<I
     fun nameMatch(matchName : String) : Boolean  {
         return Regex(name.lowercase()).containsMatchIn(matchName.lowercase())
     }
+
+    fun ingredientMatch(matchIngredients : ArrayList<Ingrediente>) : Boolean {
+        for(ingredienteReceita in matchIngredients){
+            for(ingredienteBusca in ingredientes){
+                if(ingredienteBusca.name.equals(ingredienteReceita.name)){
+                    break
+                } else if(ingredientes.indexOf(ingredienteBusca) == (ingredientes.size - 1)){
+                    return false
+                    break
+                }
+            }
+
+        }
+        return true
+    }
     fun searchRecipe(receitas : ArrayList<Receita>, tempoOn : Boolean = false, ingredienteOn : Boolean = false) : ArrayList<Receita> { // falta adicionar função de tempo/ingredientes on/off
         var busca : ArrayList<Receita> = ArrayList<Receita>()
         for(receita in receitas){
-            var temIngredientes : Boolean = true
             // Filtrar por nome
             if(nameMatch(receita.name)) {
                 // Filtrar por tempo
-                if((receita.tempo <= tempo) || !tempoOn){
+                if((receita.tempo <= tempo) || !tempoOn){ // se tempoOn = true, a comparação define se a receita entra na busca ou não, se tempoOn = false, a receita sempre passa para a proxima fase de filtragem
                     // Filtrar por ingredientes
                     if(ingredienteOn){
-                        for(ingredienteNecessario in receita.ingredientes){
-                            if(!temIngredientes){
-                                break
-                            }
-                            for(ingrediente in ingredientes){
-                                if(ingrediente.name.equals(ingredienteNecessario.name)){
-                                    break
-                                } else if(ingredientes.indexOf(ingrediente) == (ingredientes.size - 1)){
-                                    temIngredientes = false
-                                    break
-                                }
-                            }
-
+                        if(ingredientMatch(receita.ingredientes)){
+                            busca.add(receita)
                         }
-                    }
-
-
-                    if(temIngredientes){
+                    } else{
                         busca.add(receita)
                     }
                 }
