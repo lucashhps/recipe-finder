@@ -31,6 +31,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.foodapp.ui.theme.FoodAppTheme
 import java.util.Locale
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutput
+import java.io.ObjectOutputStream
+import java.io.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,10 +78,10 @@ class PageIndex(var index : Int){
 
 }
 
-class Ingrediente(var name : String, var descricao : String?) {
+class Ingrediente(var name : String, var descricao : String?) : Serializable {
 }
 
-open class Receita(var name : String, var descricao : String, var ingredientes : ArrayList<Ingrediente>, var tempo : Int) {
+open class Receita(var name : String, var descricao : String, var ingredientes : ArrayList<Ingrediente>, var tempo : Int) : Serializable{
 }
 
 class ReceitaBusca(name : String, descricao : String, ingredientes : ArrayList<Ingrediente>, tempo : Int) : Receita(name, descricao, ingredientes, tempo) {
@@ -124,15 +131,8 @@ class ReceitaBusca(name : String, descricao : String, ingredientes : ArrayList<I
 @Composable
 fun FoodApp(){
     var pageIndex by remember { mutableStateOf(1) }
-    var ingredientList by remember { mutableStateOf(ArrayList<Ingrediente>()) }
-    ingredientList.add(Ingrediente("Paprika", "Picante"))
-    ingredientList.add(Ingrediente("Orégano", "Agridoce"))
-    ingredientList.add(Ingrediente("Creme de leite", "Cremoso"))
-    ingredientList.add(Ingrediente("Queijo", "Derivado de leite"))
-    ingredientList.add(Ingrediente("Presunto", "humm porquinho"))
-    ingredientList.add(Ingrediente("Sal", "Iodo"))
-    ingredientList.add(Ingrediente("Açucar", "Doce"))
-    ingredientList.add(Ingrediente("Pimenta", "Picante"))
+    var ingredientList by remember { mutableStateOf(loadIngredientes()) }
+
 
     when(pageIndex) {
         0 -> MainMenu()
@@ -270,7 +270,63 @@ fun MenuButton(text : String){
 
 // Utility
 
+fun saveReceitas(receitas : ArrayList<Receita>) {
+    try {
+        val fs : FileOutputStream = FileOutputStream("./recipes.ser")
 
+        val os : ObjectOutputStream = ObjectOutputStream(fs)
+
+        os.writeObject(receitas)
+
+        os.close()
+
+    } catch (e : Exception) {
+        e.printStackTrace()
+    }
+}
+
+fun saveIngredientes(ingredientes : ArrayList<Ingrediente>) {
+    try {
+        val fs : FileOutputStream = FileOutputStream("./ingredientes.ser")
+
+        val os : ObjectOutputStream = ObjectOutputStream(fs)
+
+        os.writeObject(ingredientes)
+
+        os.close()
+
+    } catch (e : Exception) {
+        e.printStackTrace()
+    }
+}
+
+fun loadReceitas() : ArrayList<Receita> {
+    try{
+        val fs : FileInputStream = FileInputStream("./recipes.ser")
+        val os : ObjectInputStream = ObjectInputStream(fs)
+
+        val obj = os.readObject()
+        val receitas : ArrayList<Receita> = obj as ArrayList<Receita>
+        return receitas
+    } catch (e : Exception) {
+        e.printStackTrace()
+        return ArrayList<Receita>()
+    }
+}
+
+fun loadIngredientes() : ArrayList<Ingrediente> {
+    try{
+        val fs : FileInputStream = FileInputStream("./ingredientes.ser")
+        val os : ObjectInputStream = ObjectInputStream(fs)
+
+        val obj = os.readObject()
+        val ingredientes : ArrayList<Ingrediente> = obj as ArrayList<Ingrediente>
+        return ingredientes
+    } catch (e : Exception) {
+        e.printStackTrace()
+        return ArrayList<Ingrediente>()
+    }
+}
 
 fun String.capitalized() : String{
     return this.replaceFirstChar {
