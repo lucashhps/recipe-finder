@@ -20,6 +20,9 @@ class ReceitaBusca(name : String, descricao : String, ingredientes : List<Ingred
         }
         return true
     }
+    /* TODO include a variety of ways to search with ingredients
+    *  TODO has at least x(y, z...) ingredient(s), don't has x(y, z...) ingredient(s), has at least x(y, z...) ingredient(s) and nothing more (the only way it has currently),
+    * */
     fun searchRecipe(receitas : List<Receita>, tempoOn : Boolean = false, ingredienteOn : Boolean = false) : List<Receita> { // falta adicionar função de tempo/ingredientes on/off
         var busca : ArrayList<Receita> = ArrayList<Receita>()
         for(receita in receitas){

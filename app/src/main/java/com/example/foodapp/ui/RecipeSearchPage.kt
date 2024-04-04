@@ -4,6 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -23,16 +28,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.foodapp.FoodViewModel
 import com.example.foodapp.R
 import com.example.foodapp.model.Ingrediente
 import com.example.foodapp.model.ReceitaBusca
 import com.example.foodapp.ui.common.IngredientBar
+import com.example.foodapp.ui.theme.FoodAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeSearchPage(
-    foodViewModel: FoodViewModel
+    foodViewModel: FoodViewModel,
+    modifier : Modifier = Modifier
 ) { // WIP
     var searchRecipe : ReceitaBusca
     val uiState by foodViewModel.uiState.collectAsState()
@@ -42,11 +51,11 @@ fun RecipeSearchPage(
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
         // Page Name
 
-        Text("Buscar Receita")
+        Text(stringResource(R.string.menu_button_1))
 
         // Name Filter
 
@@ -61,7 +70,21 @@ fun RecipeSearchPage(
         // Time Filter
 
         Row(
-            modifier = Modifier
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.width(224.dp)
+        ) {
+            Text(text = "Buscar por tempo")
+            Checkbox(checked = uiState.timeSearchActive, onCheckedChange = { foodViewModel.onTimeCheckedChange(it) })
+
+        }
+
+
+
+        /* TODO put options to choose between minutes, seconds, hours, or choose hour to start and finish */
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.width(224.dp)
         ) {
             Text(
                 text = "Até"
@@ -71,39 +94,52 @@ fun RecipeSearchPage(
                 onValueChange = { foodViewModel.updateSearchParams(timeSearch = it) },
                 label = { stringResource(R.string.time_label) },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number)
+                    keyboardType = KeyboardType.Number),
+                modifier = Modifier.padding(start = 8.dp)
             )
 
-            Checkbox(checked = uiState.timeSearchActive, onCheckedChange = { foodViewModel.onTimeCheckedChange(it) })
         }
 
         // Ingredient Filter
 
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.width(224.dp)
         ) {
-            Row(
-                modifier = Modifier
-            ) {
-                Text(
-                    text = "Lista de ingredientes"
-                )
-                Checkbox(checked = uiState.ingredientSearchActive, onCheckedChange = { foodViewModel.onIngredientCheckedChange(it) })
-            }
+            Text(
+                text = "Buscar por ingredientes"
+            )
+            Checkbox(checked = uiState.ingredientSearchActive, onCheckedChange = { foodViewModel.onIngredientCheckedChange(it) })
+        }
 
-            for(ingredient in ingredientList){
-                IngredientBar(ingredient = ingredient, foodViewModel, uiState)
+        LazyColumn {
+
+            items(ingredientList) { ingredient ->
+                IngredientBar(ingredient = ingredient, foodViewModel, uiState, modifier = Modifier.width(200.dp))
             }
         }
 
         // Search Button
 
+        /* TODO implement navigation on search */
         Button(
-            onClick = { foodViewModel.onSearch() } // no futuro prov vou ter q passar o navController pra onSearch()
+            onClick = { foodViewModel.onSearch() }
         ) {
             Text(
                 text = stringResource(R.string.search)
             )
         }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun RecipeSearchPagePreview(){
+    FoodAppTheme {
+        RecipeSearchPage(foodViewModel = FoodViewModel(), modifier = Modifier.fillMaxSize().padding(24.dp))
     }
 }

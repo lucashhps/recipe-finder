@@ -1,6 +1,7 @@
 package com.example.foodapp
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.example.foodapp.model.FoodUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,9 @@ import kotlinx.coroutines.flow.update
 
 const val TAG = "FoodViewModel"
 
-class FoodViewModel {
+class FoodViewModel : ViewModel() {
+
+    /* TODO make setters to the ui variables to detect invalid input and not allow it */
 
     private var _uiState = MutableStateFlow(FoodUiState())
 
@@ -22,7 +25,7 @@ class FoodViewModel {
     val ingredientList = FoodDataSource.ingredientList
     val recipeList = FoodDataSource.recipeList
 
-    // General UI update function
+    // General UI search params update function
     fun updateSearchParams(nameSearch : String = _uiState.value.nameSearch, timeSearch : String = _uiState.value.timeSearch, timeSearchActive : Boolean = _uiState.value.timeSearchActive, ingredientSearchActive : Boolean = _uiState.value.ingredientSearchActive, searchIngredientList : MutableSet<Ingrediente> = _uiState.value.searchIngredientList){
         _uiState.update { currentState ->
             currentState.copy(nameSearch = nameSearch, timeSearch = timeSearch, timeSearchActive = timeSearchActive, ingredientSearchActive = ingredientSearchActive, searchIngredientList = searchIngredientList)
@@ -30,6 +33,22 @@ class FoodViewModel {
     }
 
     // Callbacks
+
+        // Ingredient Pages Callbacks
+    fun onIngredientNameChange(ingredientName : String){
+        _uiState.update {
+            currentState ->
+            currentState.copy(ingredientName = ingredientName)
+        }
+    }
+
+    fun onIngredientDescriptionChange(ingredientDescription : String){
+        _uiState.update {
+                currentState ->
+            currentState.copy(ingredientDescription = ingredientDescription)
+        }
+    }
+        // Recipe Search Pages Callbacks
     fun onTimeCheckedChange(activeState : Boolean) {
         updateSearchParams(timeSearchActive = activeState)
     }
@@ -54,7 +73,6 @@ class FoodViewModel {
 
     fun onSearch(){
         try {
-            /* TODO make setters to the variables to detect invalid input */
             Log.d("FoodViewModel", "starting search...")
             // aprimorar dps, ex: implementar conversão de tempo de min para ms, etc
             val name = uiState.value.nameSearch
