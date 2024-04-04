@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.example.foodapp.FoodViewModel
 import com.example.foodapp.R
 import com.example.foodapp.model.Ingrediente
+import com.example.foodapp.model.ReceitaBusca
 import com.example.foodapp.ui.common.IngredientBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,6 +34,7 @@ import com.example.foodapp.ui.common.IngredientBar
 fun RecipeSearchPage(
     foodViewModel: FoodViewModel
 ) { // WIP
+    var searchRecipe : ReceitaBusca
     val uiState by foodViewModel.uiState.collectAsState()
     val ingredientList = foodViewModel.ingredientList
     var nameSearch = uiState.nameSearch
@@ -72,7 +74,7 @@ fun RecipeSearchPage(
                     keyboardType = KeyboardType.Number)
             )
 
-            Checkbox(checked = false, onCheckedChange = { })
+            Checkbox(checked = uiState.timeSearchActive, onCheckedChange = { foodViewModel.onTimeCheckedChange(it) })
         }
 
         // Ingredient Filter
@@ -80,18 +82,24 @@ fun RecipeSearchPage(
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = "Lista de ingredientes"
-            )
+            Row(
+                modifier = Modifier
+            ) {
+                Text(
+                    text = "Lista de ingredientes"
+                )
+                Checkbox(checked = uiState.ingredientSearchActive, onCheckedChange = { foodViewModel.onIngredientCheckedChange(it) })
+            }
+
             for(ingredient in ingredientList){
-                IngredientBar(ingredient = ingredient)
+                IngredientBar(ingredient = ingredient, foodViewModel, uiState)
             }
         }
 
         // Search Button
 
         Button(
-            onClick = { }
+            onClick = { foodViewModel.onSearch() } // no futuro prov vou ter q passar o navController pra onSearch()
         ) {
             Text(
                 text = stringResource(R.string.search)
