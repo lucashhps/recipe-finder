@@ -9,9 +9,9 @@ object FoodDataSource {
         Ingrediente("Manteiga", "gordura do leite"),
         Ingrediente("Alho", "arde os olhos mas é bom"),
         Ingrediente("Cebolinha", "perfeito pra por em miojo"),
-        Ingrediente("Macarrao", "MASSA"),
-        Ingrediente("sal", "iodo"),
-        Ingrediente("açucar", "doce")
+        Ingrediente("Macarrão", "MASSA"),
+        Ingrediente("Sal", "iodo"),
+        Ingrediente("Açucar", "doce")
     )
 
     val recipeList = listOf(
