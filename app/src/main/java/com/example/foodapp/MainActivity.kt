@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.foodapp.ui.IngredientPageAdd
 import com.example.foodapp.ui.IngredientPageList
+import com.example.foodapp.ui.RecipePageAdd
 import com.example.foodapp.ui.RecipeSearchPage
 import com.example.foodapp.ui.common.IngredientListElement
 import com.example.foodapp.ui.theme.FoodAppTheme
@@ -42,8 +43,8 @@ class MainActivity : ComponentActivity() {
 fun FoodApp(
     foodViewModel : FoodViewModel
 ){
-    //IngredientPageAdd(foodViewModel = foodViewModel, modifier = Modifier)
-    IngredientPageList(foodViewModel = foodViewModel, modifier = Modifier.fillMaxSize())
+    RecipePageAdd(foodViewModel = foodViewModel, modifier = Modifier)
+    //IngredientPageList(foodViewModel = foodViewModel, modifier = Modifier.fillMaxSize())
     //RecipeSearchPage(foodViewModel = foodViewModel, modifier = Modifier.fillMaxSize().padding(24.dp))
 }
 

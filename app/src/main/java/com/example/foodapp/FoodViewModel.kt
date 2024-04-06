@@ -48,7 +48,37 @@ class FoodViewModel : ViewModel() {
             currentState.copy(ingredientDescription = ingredientDescription)
         }
     }
-        // Recipe Search Pages Callbacks
+
+    fun onAddIngredient(){
+        /* TODO ADD DATABASE */
+    }
+
+        // Recipe Add Page Callbacks
+    fun onRecipeNameChange(recipeName : String){
+            _uiState.update {
+                    currentState ->
+                currentState.copy(recipeName = recipeName)
+            }
+        }
+
+    fun onRecipeDescriptionChange(recipeDescription : String){
+        _uiState.update {
+                currentState ->
+            currentState.copy(recipeDescription = recipeDescription)
+        }
+    }
+
+    fun onRecipeTimeChange(recipeTime : String){
+        _uiState.update {
+                currentState ->
+            currentState.copy(recipeTime = recipeTime)
+        }
+    }
+
+    fun onAddRecipe(){
+        /* TODO ADD DATABASE */
+    }
+        // Recipe Search Page Callbacks
     fun onTimeCheckedChange(activeState : Boolean) {
         updateSearchParams(timeSearchActive = activeState)
     }

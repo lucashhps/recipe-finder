@@ -9,5 +9,7 @@
     <string name="menu_button_4">Configurações</string>
     <string name="ingredient_description">Descrição</string>
     <string name="add_button">Adicionar</string>
+    <string name="list_button">Lista</string>
     <string name="ingredient_add_title">Adicionar ingrediente</string>
+    <string name="recipe_add_title">Adicionar receita</string>
 </resources>

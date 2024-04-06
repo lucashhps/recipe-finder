@@ -9,10 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MenuButton(text : String, onClick : () -> Unit = { }){
+fun MenuButton(
+    text : String,
+    onClick : () -> Unit = { },
+    modifier : Modifier = Modifier
+){
     Button(
         onClick = onClick,
-        modifier = Modifier.height(75.dp).width(200.dp)
+        modifier = modifier.height(75.dp).width(200.dp)
     ) {
         Text(
             text = text

@@ -54,7 +54,7 @@ fun IngredientPageMenu(
                 .height(256.dp)
         ) {
             MenuButton(text = stringResource(R.string.add_button))
-            MenuButton(text = "Lista")
+            MenuButton(text = stringResource(R.string.list_button))
             /* TODO add navigation to buttons */
         }
 
@@ -99,7 +99,7 @@ fun IngredientPageAdd(
                     .fillMaxWidth()
                     .padding(8.dp, 12.dp)
             )
-            MenuButton(text = stringResource(R.string.add_button), onClick = {  })
+            MenuButton(text = stringResource(R.string.add_button), onClick = { foodViewModel.onAddIngredient() })
         }
     }
 }
@@ -107,7 +107,8 @@ fun IngredientPageAdd(
 @Composable
 fun IngredientPageList(
     modifier : Modifier = Modifier,
-    foodViewModel : FoodViewModel = viewModel()
+    foodViewModel : FoodViewModel = viewModel(),
+    addButton : Boolean = false
 ) {
 
     Box(
@@ -139,6 +140,18 @@ fun IngredientPageList(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.width(68.dp)
                     ){
+                        if(addButton){
+                            Button(
+                                onClick = { /*TODO make edit callback */ },
+                                contentPadding = PaddingValues(8.dp),
+                                modifier = Modifier.size(32.dp)
+                            ) { // button to edit
+                                Icon(
+                                    painter = painterResource(R.drawable.baseline_add_24),
+                                    contentDescription = "edit button"
+                                )
+                            }
+                        }
                         Button(
                             onClick = { /*TODO make edit callback */ },
                             contentPadding = PaddingValues(8.dp),

@@ -9,5 +9,9 @@ data class FoodUiState(
     var searchIngredientList : MutableSet<Ingrediente> = mutableSetOf<Ingrediente>(),
     /* variables for ingredient pages (add, list) */
     var ingredientName : String = "",
-    var ingredientDescription : String = ""
+    var ingredientDescription : String = "",
+    var recipeName : String = "",
+    var recipeDescription : String = "",
+    var recipeIngredientList : MutableSet<Ingrediente> = mutableSetOf<Ingrediente>(),
+    var recipeTime : String = ""
 )
