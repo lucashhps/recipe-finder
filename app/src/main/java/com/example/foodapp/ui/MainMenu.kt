@@ -1,5 +1,6 @@
 package com.example.foodapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,31 +18,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.foodapp.FoodScreens
 import com.example.foodapp.R
 import com.example.foodapp.ui.common.MenuButton
 import com.example.foodapp.ui.theme.FoodAppTheme
 
 @Composable
 fun MainMenuScreen(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    navController : NavHostController = rememberNavController()
 ) {
-    MainMenu(modifier = modifier)
+    MainMenu(modifier = modifier, navController)
 }
 
 @Composable
 fun MainMenu(
-    modifier : Modifier = Modifier
+    modifier : Modifier,
+    navController : NavHostController
 ) {
     Box(modifier = modifier) {
         Column (
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.align(Alignment.Center).height(512.dp)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .height(512.dp)
         ) {
-            MenuButton(stringResource(R.string.menu_button_1))
-            MenuButton(stringResource(R.string.menu_button_2))
-            MenuButton(stringResource(R.string.menu_button_3))
-            MenuButton(stringResource(R.string.menu_button_4))
+
+            MenuButton(stringResource(R.string.menu_button_1), { navController.navigate(FoodScreens.Search.name) })
+            MenuButton(stringResource(R.string.menu_button_2), { navController.navigate(FoodScreens.RecipeMenu.name) })
+            MenuButton(stringResource(R.string.menu_button_3), { navController.navigate(FoodScreens.IngredientMenu.name) })
+            MenuButton(stringResource(R.string.menu_button_4), { navController.navigate(FoodScreens.Configuration.name) })
         }
     }
 

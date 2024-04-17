@@ -32,6 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.foodapp.FoodScreens
 import com.example.foodapp.FoodViewModel
 import com.example.foodapp.R
 import com.example.foodapp.ui.common.IngredientListElement
@@ -41,7 +44,8 @@ import com.example.foodapp.ui.theme.FoodAppTheme
 
 @Composable
 fun RecipePageMenu(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    navController : NavHostController = rememberNavController()
 ) {
     Box(modifier = modifier){
         Column(
@@ -50,8 +54,8 @@ fun RecipePageMenu(
                 .align(Alignment.Center)
                 .height(256.dp)
         ) {
-            MenuButton(text = stringResource(R.string.add_button))
-            MenuButton(text = stringResource(R.string.list_button))
+            MenuButton(text = stringResource(R.string.add_button), { navController.navigate(FoodScreens.RecipeAdd.name) })
+            MenuButton(text = stringResource(R.string.list_button), { navController.navigate(FoodScreens.RecipeList.name) })
             /* TODO add navigation to buttons */
         }
 
